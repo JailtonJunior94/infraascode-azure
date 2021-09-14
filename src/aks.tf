@@ -17,12 +17,12 @@ resource "azurerm_kubernetes_cluster" "finance_aks" {
   }
 }
 
-# resource "azurerm_role_assignment" "aks-acr" {
-#   scope                = azurerm_container_registry.finance_acr.id
-#   role_definition_name = "AcrPull"
-#   principal_id         = azurerm_kubernetes_cluster.finance_aks.kubelet_identity[0].object_id
-#   depends_on = [
-#     azurerm_container_registry.finance_acr,
-#     azurerm_kubernetes_cluster.finance_aks
-#   ]
-# }
+resource "azurerm_role_assignment" "finance_aks_acr" {
+  scope                = azurerm_container_registry.finance_acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = azurerm_kubernetes_cluster.finance_aks.kubelet_identity[0].object_id
+  depends_on = [
+    azurerm_container_registry.finance_acr,
+    azurerm_kubernetes_cluster.finance_aks
+  ]
+}
